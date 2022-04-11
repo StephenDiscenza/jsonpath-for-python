@@ -30,7 +30,7 @@ def search_json(jsonDocument, pathItems):
     return search_json(jsonDocument, pathItems[1:])
 
 
-def get_json_request_item(jsonDocument, path):
+def get_json_item(jsonDocument, path):
     '''
     Uses supplied JSONPath to search for and return a value or 
     object from the JSON document. 
@@ -58,17 +58,22 @@ def update_json_element(jsonDocument, path, value):
         raise Exception('Dang, update failed for path: {path}')
 
 
-def write_new_json_element(jsonDocument, path, newElementName, value):
+def write_new_json_element(jsonDocument, path, value, newElementName=None):
     '''
-    Inserts new data into the JSON document. If the special value "newArray" is
-    passed it will create a new empty array with the supplied name. When inserting
-    into a list it will add an object like {"Cd": newElementName, "Value": value}
+    Inserts new data into the JSON document. When adding a new value to a list (array)
+    newElementName should be ommitted.
     '''
     pathItems = path.split(".")[1:]
     insertLocation = search_json(jsonDocument, pathItems)
-    if value == 'newArray':
-        insertLocation[newElementName] = []
-    elif path[-1] != ']' and len(path) > 1:
-        insertLocation.append({'Cd': newElementName, 'Value': value})
+    # if value == 'newArray':
+    #     insertLocation[newElementName] = []
+    # elif path[-1] != ']' and len(path) > 1:
+    #     insertLocation.append({'Cd': newElementName, 'Value': value})
+    if type(insertLocation) == list:
+        insertLocation.append(value)
     else:
-        insertLocation[newElementName] = value
+        try: 
+            insertLocation[newElementName] = value
+        except:
+            raise Exception(f'Dang, could not write a new element at {path}')
+

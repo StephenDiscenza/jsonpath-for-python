@@ -1,0 +1,32 @@
+{
+    "Friends": [
+        {
+            "Name": "Bill",
+            "FriendshipStartDate": "2020-01-01",
+            "FriendshipEndDate": null,
+            "CanILiftThisFriend": false,
+            "CanThisFriendLiftMe": true,
+            "Pets": [
+                {
+                    "Name": "Spot",
+                    "Species": "Dog",
+                    "Friendly": true
+                }
+            ]
+        },
+        {
+            "Name": "Sue",
+            "FriendshipStartDate": "2010-01-01",
+            "FriendshipEndDate": "2020-01-01",
+            "CanILiftThisFriend": true,
+            "CanThisFriendLiftMe": false,
+            "Pets": [
+                {
+                    "Name": "Whiskers",
+                    "Species": "Cat",
+                    "Friendly": false
+                }
+            ]
+        }
+    ]
+}
