@@ -65,10 +65,6 @@ def write_new_json_element(jsonDocument, path, value, newElementName=None):
     '''
     pathItems = path.split(".")[1:]
     insertLocation = search_json(jsonDocument, pathItems)
-    # if value == 'newArray':
-    #     insertLocation[newElementName] = []
-    # elif path[-1] != ']' and len(path) > 1:
-    #     insertLocation.append({'Cd': newElementName, 'Value': value})
     if type(insertLocation) == list:
         insertLocation.append(value)
     else:
