@@ -1,8 +1,6 @@
 # jsonpath-lite
 A very light weight utility which parses and uses JSONPath expressions to do things with the Python data structures representing a JSON document.
 
-Does not currently support multiple field matching. This is on the todo list but many other fancier features like wildcard search are not. 
-
 ## Usage
 Say you have this JSON:
 ```
