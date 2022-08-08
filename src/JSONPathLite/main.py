@@ -1,7 +1,7 @@
 import re
 
 
-def search_json(jsonDocument, pathItems):
+def search_json(jsonDocument, pathItems: list):
     '''
     Uses parsed JSONPath components to recursively search though 
     Python lists and dicts which represent a valid JSON structure.
@@ -16,21 +16,32 @@ def search_json(jsonDocument, pathItems):
         field, index = pathInfo
         jsonDocument = jsonDocument.get(field)[int(index)]
     
-    elif len(pathInfo) == 3: # searching a list and we have a subfield/value pair like [?subfield="value"]
-        field, subfield, value = pathInfo
-        value = value.lstrip("'").rstrip("'")
+    elif len(pathInfo) >= 3: # searching a list and we have a number of subfield/value pairs like [?subfield="value"]
+        field = pathInfo[0]
         if type(jsonDocument.get(field)) != list:
-            raise Exception(f'Cannot query {jsonDocument.get(field)} with ?{subfield}={value}')
+            raise Exception(f'Cannot query {jsonDocument.get(field)}. It is not a list')
+        # check for matches for each subfield/value pair
+        count_of_pairs = len(pathInfo) - 1        
         for item in jsonDocument.get(field):
-            if str(item.get(subfield)) == value:
+            found_match = True
+            pairs_index = 1
+            while pairs_index < count_of_pairs:
+                subfield = pathInfo[pairs_index]
+                value = pathInfo[pairs_index + 1].lstrip("'").rstrip("'")
+                if str(item.get(subfield)) != value:
+                    found_match = False
+                    break
+                pairs_index += 2
+            if found_match == True:
                 jsonDocument = item
                 return search_json(jsonDocument, pathItems[1:])
-        return None #If item not in list
+            
+        return None #If no match is found
     
     return search_json(jsonDocument, pathItems[1:])
 
 
-def get_json_item(jsonDocument, path):
+def get_json_item(jsonDocument, path: str):
     '''
     Uses supplied JSONPath to search for and return a value or 
     object from the JSON document. 
@@ -46,7 +57,7 @@ def get_json_item(jsonDocument, path):
         return result
 
 
-def update_json_element(jsonDocument, path, value):
+def update_json_element(jsonDocument, path: str, value):
     '''
     Upserts the value of the field specified by the supplied path.
     '''
@@ -58,7 +69,7 @@ def update_json_element(jsonDocument, path, value):
         raise Exception('Dang, update failed for path: {path}')
 
 
-def write_new_json_element(jsonDocument, path, value, newElementName=None):
+def write_new_json_element(jsonDocument, path: str, value, newElementName=None):
     '''
     Inserts new data into the JSON document. When adding a new value to a list (array)
     newElementName should be ommitted.

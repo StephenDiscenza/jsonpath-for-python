@@ -33,6 +33,7 @@ def test_update_missing_item():
     with pytest.raises(Exception):
         update_json_element(TEST_DATA, path, value)
 
+
 def test_write_field_at_valid_path():
     path = '$.Friends[?Name="Sue"].Pets[?Name="Whiskers"]'
     new_field_name = 'Eats'
@@ -63,3 +64,8 @@ def test_add_item_at_invalid_path():
     with pytest.raises(Exception):
         write_new_json_element(TEST_DATA, path, value, new_field_name)
     
+
+def test_multiple_criteria():
+    path = '$.Friends[?Name="Bill"].Pets[?Name="Spot"&&Species="Dog"].Name'
+    value = 'Spot'
+    assert get_json_item(TEST_DATA, path) == value, f'The value at {path} is not {value}.'
