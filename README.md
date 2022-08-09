@@ -26,3 +26,5 @@ Note that a value is not supplied for newElementName since we are adding a new i
 
 If you want to add a new field to one of the Things:
 `write_new_json_element(JSON Document, $.Things[?Name="Thing1"], True, "IsAGoodBoy")`
+
+This project came to be out of a need to find and manipulate specific pieces of data within a large highly nested JSON structure. As such, it is designed to stop searching and return the first match for a given path. The functionality of returning all matches for a given path will be added at some point in the future. 

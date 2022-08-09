@@ -12,15 +12,21 @@ def search_json(jsonDocument, pathItems: list):
     if len(pathInfo) == 1: # searching a dict
         jsonDocument = jsonDocument.get(pathInfo[0])
 
-    elif len(pathInfo) == 2: # searching a list and we have the index
+    # Searching a list and we have the index
+    elif len(pathInfo) == 2: 
         field, index = pathInfo
-        jsonDocument = jsonDocument.get(field)[int(index)]
+        try:
+            jsonDocument = jsonDocument.get(field)[int(index)]
+        except IndexError: 
+            # This index does not exist in the data so we return nothing
+            return None
     
-    elif len(pathInfo) >= 3: # searching a list and we have a number of subfield/value pairs like [?subfield="value"]
+    # Searching a list and we have a number of subfield/value pairs like [?subfield="value"]
+    elif len(pathInfo) >= 3: 
         field = pathInfo[0]
         if type(jsonDocument.get(field)) != list:
             raise Exception(f'Cannot query {jsonDocument.get(field)}. It is not a list')
-        # check for matches for each subfield/value pair
+        # Check for matches for each subfield/value pair
         count_of_pairs = len(pathInfo) - 1        
         for item in jsonDocument.get(field):
             found_match = True
@@ -34,10 +40,9 @@ def search_json(jsonDocument, pathItems: list):
                 pairs_index += 2
             if found_match == True:
                 jsonDocument = item
-                return search_json(jsonDocument, pathItems[1:])
-            
-        return None #If no match is found
-    
+                return search_json(jsonDocument, pathItems[1:])  
+        # If data being searched couldn't be found for we return None
+        return None 
     return search_json(jsonDocument, pathItems[1:])
 
 
