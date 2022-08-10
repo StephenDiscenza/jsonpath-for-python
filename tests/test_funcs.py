@@ -1,5 +1,6 @@
 import json
 from src.JSONPathLite.main import get_json_item, update_json_element, write_new_json_element
+from src.JSONPathLite.utils import validate_json_path
 import pytest
 
 
@@ -69,3 +70,22 @@ def test_multiple_criteria():
     path = '$.Friends[?Name="Bill"].Pets[?Name="Spot"&&Species="Dog"].Name'
     value = 'Spot'
     assert get_json_item(TEST_DATA, path) == value, f'The value at {path} is not {value}.'
+
+
+def test_json_path_validation():
+    good_paths = ['$.Things.Stuff', '$.Things[?Name="Foo"].Stuff', '$.Things[?FirstName="Foo" && LastName="Bar"]']
+    bad_paths = ['$.[?Name="Foo"]', '$.[0]', '$.Things[?Name=Foo]', '$.Things[Name="Foo"]', '$.Things[?FirstName="Foo"&LastName="Bar"]']
+    for path in good_paths:
+        assert validate_json_path(path)[0] == True
+    for path in bad_paths:
+        assert validate_json_path(path)[0] == False
+
+
+def test_find_value_at_invalid_path():
+    try:
+        item = get_json_item(TEST_DATA, '$.Friends.Name=Bill')
+        print(item)
+        if item:
+            assert False
+    except Exception as e:
+        assert str(e) == 'Syntax errors were found in the following parts of the supplied JSON path: Name=Bill'
