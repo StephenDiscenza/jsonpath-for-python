@@ -59,7 +59,7 @@ def get_json_item(jsonDocument, path: str):
         pathItems = path.split(".")[1:]
         result = search_json(jsonDocument, pathItems)
     except Exception as e:
-        raise handle_search_json_exceptions(path, e)
+        raise handle_search_json_exceptions(path, e, 'Get item')
     return result
 
 
@@ -71,7 +71,7 @@ def update_json_element(jsonDocument, path: str, value):
     try: 
         containingDict = search_json(jsonDocument, pathItems[:-1])
     except Exception as e:
-        raise handle_search_json_exceptions(path, e)
+        raise handle_search_json_exceptions(path, e, 'Update')
     # This is really an upsert
     containingDict[pathItems[-1]] = value
 
@@ -85,7 +85,7 @@ def write_new_json_element(jsonDocument, path: str, value, newElementName=None):
     try:
         insertLocation = search_json(jsonDocument, pathItems)
     except Exception as e:
-        raise handle_search_json_exceptions(path, e)
+        raise handle_search_json_exceptions(path, e, 'Write new')
     if isinstance(insertLocation, list):
         insertLocation.append(value)
     else:
