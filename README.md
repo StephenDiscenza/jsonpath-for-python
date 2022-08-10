@@ -32,4 +32,5 @@ With pip:
 `pip install JSONPath-Lite`  
 Otherwise you can just grab the JSONPathLite package from this repo and import it in your project. 
 
+## Notes
 This project came to be out of a need to find and manipulate specific pieces of data within a large highly nested JSON structure. As such, it is designed to stop searching and return the first match for a given path. The functionality of returning all matches for a given path will be added at some point in the future. 
