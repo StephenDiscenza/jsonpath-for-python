@@ -1,5 +1,5 @@
 # jsonpath-lite
-A very light weight utility which parses and uses JSONPath expressions to do things with the Python data structures representing a JSON document.
+A very light weight utility which parses and uses JSONPath expressions for simple interactions with the Python data structures representing a JSON document.
 
 ## Usage
 Say you have this JSON:
@@ -26,5 +26,10 @@ Note that a value is not supplied for newElementName since we are adding a new i
 
 If you want to add a new field to one of the Things:  
 `write_new_json_element(JSON Document, $.Things[?Name="Thing1"], True, "IsAGoodBoy")`
+
+## Installation
+With pip:
+`pip install JSONPath-Lite`  
+Otherwise you can just grab the JSONPathLite package from this repo and import it in your project. 
 
 This project came to be out of a need to find and manipulate specific pieces of data within a large highly nested JSON structure. As such, it is designed to stop searching and return the first match for a given path. The functionality of returning all matches for a given path will be added at some point in the future. 
